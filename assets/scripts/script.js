@@ -1,8 +1,12 @@
-const SPEC_CHARS = ' !"#$%&\'()*+,-./:;<=>?@[]^_`{|}~';
+const LOWERCASE_CHARS = 'abcdefghijklmnopqrstuvwxyz';
+const UPPERCASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const NUMBERS = '0123456789';
+const SPEC_CHARS = '!"#$%&\'()*+,-./:;<=>?@[]^_`{|}~';
 
 var generateBtn = document.querySelector('#generate');
 
 function generatePassword() {
+  let password = [];
   const criteria = {
     passwordLength: null,
     hasLowercase: false,
@@ -10,8 +14,6 @@ function generatePassword() {
     hasNumeric: false,
     hasSpecial: false,
   };
-
-  let password;
 
   criteria.passwordLength = getPasswordLength();
   criteria.hasLowercase = confirm(
@@ -24,8 +26,25 @@ function generatePassword() {
   criteria.hasSpecial = confirm('Would you like to add special characters?');
 
   console.log(criteria);
+  let chars = '';
+  if (criteria.hasLowercase) {
+    chars += LOWERCASE_CHARS;
+  }
+  if (criteria.hasUppercase) {
+    chars += UPPERCASE_CHARS;
+  }
+  if (criteria.hasNumeric) {
+    chars += NUMBERS;
+  }
+  if (criteria.hasSpecial) {
+    chars += SPEC_CHARS;
+  }
 
-  return password;
+  for (let i = 0; i < criteria.passwordLength; i += 1) {
+    password.push(chars[Math.floor(Math.random() * chars.length)]);
+  }
+
+  return password.join('');
 }
 
 function getPasswordLength() {
